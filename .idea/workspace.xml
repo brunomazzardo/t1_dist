@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61132410-68e1-4a76-82d0-4deb43e4f6a1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configP1.json" beforeDir="false" afterPath="$PROJECT_DIR$/configP1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configP2.json" beforeDir="false" afterPath="$PROJECT_DIR$/configP2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configSP1.json" beforeDir="false" afterPath="$PROJECT_DIR$/configSP1.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/peer.js" beforeDir="false" afterPath="$PROJECT_DIR$/peer.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -42,7 +38,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="js" value="2118" />
+          <entry key="js" value="2162" />
           <entry key="json" value="154" />
           <entry key="mp4" value="32" />
           <entry key="txt" value="61" />
@@ -51,7 +47,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="154" />
-          <entry key="JavaScript" value="2118" />
+          <entry key="JavaScript" value="2162" />
           <entry key="PLAIN_TEXT" value="93" />
         </counts>
       </usages-collector>
@@ -62,8 +58,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/peer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="50" column="33" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
+            <state relative-caret-position="242">
+              <caret line="102" column="7" lean-forward="true" selection-start-line="102" selection-start-column="7" selection-end-line="102" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -198,16 +194,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1555445459053</updated>
-      <workItem from="1555445460483" duration="9227000" />
+      <workItem from="1555445460483" duration="9983000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9227000" />
+    <option name="totallyTimeSpent" value="9983000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1053" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
@@ -286,8 +281,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/peer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="50" column="33" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
+        <state relative-caret-position="242">
+          <caret line="102" column="7" lean-forward="true" selection-start-line="102" selection-start-column="7" selection-end-line="102" selection-end-column="7" />
         </state>
       </provider>
     </entry>
