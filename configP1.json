@@ -1,5 +1,6 @@
 {
   "ip" :"127.0.0.1",
-  "port":3333,
+  "port":30001,
+  "sp_port":30000,
   "directoryPath": "./file_repo/"
 }

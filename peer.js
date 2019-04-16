@@ -42,19 +42,16 @@ function superPeer(config){
         let messageParsed = JSON.parse(message)
         switch (messageParsed.type) {
             case "request_connection":
-                connections.push({files: [...messageParsed.files], owner: remote })
+                connections.push({files: [...messageParsed.content], owner: remote })
                 break;
             case "request_file":
-                const ownersList = connections.map(c =>{
-                    if(c.files.find(f => f.fileName === messageParsed.fileName) !== void 0)
+                const owners = connections.map(c =>{
+                    if(c.files.find(f => f.fileName === messageParsed.content) !== void 0)
                         return c.owner
-                }).filter(c => c !==null)
+                }).filter(Boolean)
 
-                const message  = {
-                    type: "file_found",
-                    owners: ownersList
-                }
-                const buffer = new Buffer(JSON.stringify(message))
+                const buffer  = buildMessage("file_found",owners)
+
                 server.send(buffer, 0, buffer.length, remote.port, remote.address, function(err, bytes) {
                     if (err) throw err;
                     console.log('UDP message sent to ' + remote.address +':'+ remote.port);
@@ -62,52 +59,72 @@ function superPeer(config){
 
         }
     });
-    server.bind(config.port, config.host);
+    server.bind(config.port, config.ip);
 }
+
+
+function buildMessage(type,content){
+    return new Buffer(JSON.stringify( {
+        type:type,
+        content
+    }))
+}
+
+
+
 
 function peer(config){
 
+    var stdin = process.openStdin();
 
-    let filesList = []
+    let files = []
 
     const dir = fs.readdirSync(config.directoryPath)
 
     dir.forEach(function (file) {
         const fileObject = fs.readFileSync(config.directoryPath + file)
         let fileData = { fileName: file, hash: checksum(fileObject) }
-        filesList.push(fileData)
+        files.push(fileData)
     });
 
 
-    const request_connection = {
-        files : filesList,
-        type:"request_connection",
-    }
 
-    const buffer  = new Buffer(JSON.stringify(request_connection))
+    const buffer  = buildMessage("request_connection",files)
+
     const client = dgram.createSocket('udp4');
-    client.send(buffer, 0, buffer.length, config.port, config.host, function(err, bytes) {
-        if (err) throw err;
-        console.log('UDP message sent to ' + HOST +':'+ PORT);
-        const request_connection = {
-            fileName : 'orange.txt',
-            type:"request_file",
-        }
-        const buffer  = new Buffer(JSON.stringify(request_connection))
-        client.send(buffer, 0, buffer.length, config.port, config.host, function(err, bytes) {
-            if (err) throw err;
-            console.log('UDP message sent to ' + HOST +':'+ PORT);
-        });
-    });
-
 
     client.on('message', function (message, remote) {
         let messageParsed = JSON.parse(message)
         switch (messageParsed.type) {
             case "file_found":
-                console.log(messageParsed.owners)
+                console.log(messageParsed.content)
         }
     })
+
+    client.bind(config.port, config.ip);
+
+
+
+    client.send(buffer, 0, buffer.length, config.sp_port, config.ip, function(err, bytes) {
+        if (err) throw err;
+        console.log('UDP message sent to ' + config.ip +':'+ config.sp_port);
+    });
+
+
+    stdin.addListener("data", function(d) {
+        const input = d.toString().trim().split(" ")
+        const action  = input[0]
+        switch (action) {
+            case "rf" :
+                const buffer  = buildMessage("request_file",input[1])
+                client.send(buffer, 0, buffer.length, config.sp_port, config.ip, function(err, bytes) {
+                    if (err) throw err;
+                    console.log('UDP message sent to ' + config.ip +':'+ config.sp_port);
+                });
+        }
+    });
+
+
 }
 
 
