@@ -40,17 +40,19 @@ function superPeer(config){
 
     server.on('message', function (message, remote) {
         let messageParsed = JSON.parse(message)
+        let buffer = new Buffer()
+        let owners = []
         switch (messageParsed.type) {
             case "request_connection":
                 connections.push({files: [...messageParsed.content], owner: remote })
                 break;
             case "request_file":
-                const owners = connections.map(c =>{
+                 owners = connections.map(c =>{
                     if(c.files.find(f => f.fileName === messageParsed.content) !== void 0)
                         return c.owner
                 }).filter(Boolean)
 
-                const buffer  = buildMessage("file_found",owners)
+                 buffer  = buildMessage("file_found",owners)
 
                 server.send(buffer, 0, buffer.length, remote.port, remote.address, function(err, bytes) {
                     if (err) throw err;
@@ -58,6 +60,18 @@ function superPeer(config){
                 });
                 break;
             case "request_file_mc":
+                 owners = connections.map(c =>{
+                    if(c.files.find(f => f.fileName === messageParsed.content.fileName) !== void 0)
+                        return c.owner
+                }).filter(Boolean)
+
+                buffer  = buildMessage("file_found_mc",{owners:owners,origin:remote})
+
+                server.send(buffer, 0, buffer.length, remote.port, remote.address, function(err, bytes) {
+                    if (err) throw err;
+                    console.log('UDP message sent to ' + remote.address +':'+ remote.port);
+                });
+                break;
 
 
         }
