@@ -64,7 +64,7 @@ function superPeer(config){
                         return c.owner
                 }).filter(Boolean)
 
-                buffer  = buildMessage("file_found_mc",{owners:owners,origin:messageParsed.content.origin})
+                buffer  = buildMessage("file_found_mc",{owners:owners,origin:messageParsed.content.origin,fileName:messageParsed.content.fileName})
 
                 server.send(buffer, 0, buffer.length, remote.port, remote.address, function(err, bytes) {
                     if (err) throw err;
@@ -72,12 +72,12 @@ function superPeer(config){
                 });
                 break;
             case "file_found_mc":
-                buffer  = buildMessage("file_found",messageParsed.content.owners)
-
-                server.send(buffer, 0, buffer.length, messageParsed.content.origin.port, messageParsed.content.origin.address, function(err, bytes) {
-                    if (err) throw err;
-                    console.log('UDP message-file_found sent to ' + messageParsed.content.origin.address +':'+ messageParsed.content.origin.port);
-                });
+                buffer  = buildMessage("file_found",{owners:messageParsed.content.owners,fileName:messageParsed.content.fileName})
+                if(!!messageParsed.content.owners && messageParsed.content.owners.length > 0)
+                    server.send(buffer, 0, buffer.length, messageParsed.content.origin.port, messageParsed.content.origin.address, function(err, bytes) {
+                        if (err) throw err;
+                        console.log('UDP message-file_found sent to ' + messageParsed.content.origin.address +':'+ messageParsed.content.origin.port);
+                    });
 
         }
     });
@@ -131,11 +131,11 @@ function peer(config){
         switch (messageParsed.type) {
             case "file_found":
                 console.log(messageParsed.content)
-                if(!!messageParsed.content && messageParsed.content.length > 0) {
-                    const buffer = buildMessage("request_file_download", lastFileRequest)
-                    client.send(buffer, 0, buffer.length, messageParsed.content[0].port, messageParsed.content[0].ip, function (err, bytes) {
+                if(!!messageParsed.content.owners && messageParsed.content.owners.length > 0) {
+                    const buffer = buildMessage("request_file_download", messageParsed.content.fileName)
+                    client.send(buffer, 0, buffer.length, messageParsed.content.owners[0].port, messageParsed.content.owners[0].ip, function (err, bytes) {
                         if (err) throw err;
-                        console.log('UDP message request_file_download sent to ' + messageParsed.content[0].address + ':' + messageParsed.content[0].port);
+                        console.log('UDP message request_file_download sent to ' + messageParsed.content.owners[0].address + ':' + messageParsed.content.owners[0].port);
                     });
                 }
                 break;
@@ -162,14 +162,26 @@ function peer(config){
     stdin.addListener("data", function(d) {
         const input = d.toString().trim().split(" ")
         const action  = input[0]
+        let buffer =""
         switch (action) {
             case "rf" :
                 lastFileRequest = input[1]
-                const buffer  = buildMessage("request_file",lastFileRequest)
+                 buffer  = buildMessage("request_file",lastFileRequest)
                 client.send(buffer, 0, buffer.length, config.sp_port, config.ip, function(err, bytes) {
                     if (err) throw err;
                     console.log('UDP message sent to ' + config.ip +':'+ config.sp_port);
                 });
+                break;
+            case "rfl" :
+
+                input[1].split(",").forEach(sr =>{
+                    buffer  = buildMessage("request_file",sr)
+                        client.send(buffer, 0, buffer.length, config.sp_port, config.ip, function(err, bytes) {
+                            if (err) throw err;
+                            console.log('UDP message sent to ' + config.ip +':'+ config.sp_port);
+                        });
+                    })
+                break;
         }
     });
 }

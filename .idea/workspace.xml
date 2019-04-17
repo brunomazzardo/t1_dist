@@ -39,7 +39,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="js" value="3323" />
+          <entry key="js" value="3605" />
           <entry key="json" value="219" />
           <entry key="mp4" value="32" />
           <entry key="txt" value="83" />
@@ -48,7 +48,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="219" />
-          <entry key="JavaScript" value="3323" />
+          <entry key="JavaScript" value="3605" />
           <entry key="PLAIN_TEXT" value="115" />
         </counts>
       </usages-collector>
@@ -59,8 +59,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/peer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="153" column="135" selection-start-line="153" selection-start-column="135" selection-end-line="153" selection-end-column="135" />
+            <state relative-caret-position="332">
+              <caret line="78" column="50" lean-forward="true" selection-start-line="78" selection-start-column="50" selection-end-line="78" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -123,6 +123,7 @@
     <findStrings>
       <find>host</find>
       <find>messageParsed</find>
+      <find>lastFile</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -217,12 +218,12 @@
       <option name="presentableId" value="Default" />
       <updated>1555445459053</updated>
       <workItem from="1555445460483" duration="15659000" />
-      <workItem from="1555499715948" duration="1116000" />
+      <workItem from="1555499715948" duration="2195000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16775000" />
+    <option name="totallyTimeSpent" value="17854000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1053" extended-state="6" />
@@ -326,8 +327,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/peer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="153" column="135" selection-start-line="153" selection-start-column="135" selection-end-line="153" selection-end-column="135" />
+        <state relative-caret-position="332">
+          <caret line="78" column="50" lean-forward="true" selection-start-line="78" selection-start-column="50" selection-end-line="78" selection-end-column="50" />
         </state>
       </provider>
     </entry>
