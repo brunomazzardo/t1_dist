@@ -35,7 +35,17 @@ function superPeer(config){
         const address = server.address();
         console.log('UDP Server listening on ' + address.address + ":" + address.port);
     });
-    const connections  = [];
+    let connections  = [];
+
+
+    setInterval(()=>{
+        let verifyKA = new Date();
+        connections = connections.filter(con => {
+            console.log((verifyKA - con.lastKeepAlive))
+            return (verifyKA - con.lastKeepAlive) < 10000;
+        })
+        console.log(connections)
+    },3000)
 
     server.on('message', function (message, remote) {
         let messageParsed = JSON.parse(message)
@@ -44,7 +54,16 @@ function superPeer(config){
         console.log('received '+ messageParsed.type + ' from' + remote.address +':'+ remote.port)
         switch (messageParsed.type) {
             case "request_connection":
-                connections.push({files: [...messageParsed.content], owner: remote })
+                connections.push({files: [...messageParsed.content], owner: remote, lastKeepAlive: new Date() })
+                break;
+            case "keep_alive":
+                const remoteOwner = remote.address + ":" + remote.port;
+                connections.forEach(con => {
+                    const conOwner = con.owner.address + ":" + con.owner.port;
+                    if(conOwner === remoteOwner) {
+                        con.lastKeepAlive = new Date();
+                    }
+                })
                 break;
             case "request_file":
                 //TODO implementar sistema de multicast, hoje ele faz um unicast para cada supernodo que ele conhece :(
@@ -138,7 +157,16 @@ function peer(config){
     const files = readDir(config)
     const buffer  = buildMessage("request_connection",files)
     const client = dgram.createSocket('udp4');
-    let lastFileRequest = ""
+    let lastFileRequest = "";
+
+    setInterval(()=> {
+        const buffer =  buildMessage("keep_alive")
+        client.send(buffer, 0, buffer.length, config.sp_port, config.sp_ip, function(err, bytes) {
+            if (err) throw err;
+            console.log('UDP message sent to ' + config.sp_ip +':'+ config.sp_port);
+        });
+    }, 5000);
+
     client.on('message', function (message, remote) {
         let messageParsed = JSON.parse(message)
         console.log('received '+ messageParsed.type + ' from' + remote.address +':'+ remote.port)

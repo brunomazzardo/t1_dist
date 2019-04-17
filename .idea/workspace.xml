@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61132410-68e1-4a76-82d0-4deb43e4f6a1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/configP1.json" beforeDir="false" afterPath="$PROJECT_DIR$/configP1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configP2.json" beforeDir="false" afterPath="$PROJECT_DIR$/configP2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configP3.json" beforeDir="false" afterPath="$PROJECT_DIR$/configP3.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/peer.js" beforeDir="false" afterPath="$PROJECT_DIR$/peer.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -43,7 +40,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="js" value="4465" />
+          <entry key="js" value="5021" />
           <entry key="json" value="279" />
           <entry key="mp4" value="32" />
           <entry key="txt" value="83" />
@@ -52,7 +49,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="279" />
-          <entry key="JavaScript" value="4465" />
+          <entry key="JavaScript" value="5021" />
           <entry key="PLAIN_TEXT" value="115" />
         </counts>
       </usages-collector>
@@ -63,8 +60,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/peer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-208">
-              <caret line="170" column="81" selection-start-line="170" selection-start-column="81" selection-end-line="170" selection-end-column="81" />
+            <state relative-caret-position="17">
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
             </state>
           </provider>
         </entry>
@@ -252,15 +249,16 @@
       <updated>1555445459053</updated>
       <workItem from="1555445460483" duration="15659000" />
       <workItem from="1555499715948" duration="3157000" />
-      <workItem from="1555525718524" duration="12902000" />
+      <workItem from="1555525718524" duration="14727000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31718000" />
+    <option name="totallyTimeSpent" value="33543000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1053" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10332103" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -274,7 +272,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3297414" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.30818966" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -330,13 +328,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/file_repo/bananinha.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="33" selection-start-column="33" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/file_repo/brasileirinhas2019completoamv1080.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -372,10 +363,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/file_repo/bananinha.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="33" selection-start-column="33" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/peer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-208">
-          <caret line="170" column="81" selection-start-line="170" selection-start-column="81" selection-end-line="170" selection-end-column="81" />
+        <state relative-caret-position="17">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
         </state>
       </provider>
     </entry>
