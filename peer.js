@@ -107,6 +107,17 @@ function readDir(config){
 
 
 
+function getFileFromDir(config,fileName){
+    const dir = fs.readdirSync(config.directoryPath)
+    const filesWithFileName = dir.map(function (file) {
+        const fileObject = fs.readFileSync(config.directoryPath + file,'utf-8')
+        if(file === fileName)
+            return fileObject
+    });
+    return filesWithFileName[0]
+}
+
+
 function peer(config){
     const stdin = process.openStdin();
     const files = readDir(config)
@@ -129,8 +140,9 @@ function peer(config){
                 }
                 break;
             case "request_file_download":
-                const requested_file = files.find(f => f.fileName = messageParsed.content)
-                const buffer = buildMessage("receive_file",requested_file )
+                const requested_file_hash = files.find(f => f.fileName = messageParsed.content).hash
+                const requested_file =  getFileFromDir(config,messageParsed.content)
+                const buffer = buildMessage("receive_file",{requested_file:requested_file,request_file_hash:requested_file_hash})
                 client.send(buffer, 0, buffer.length,remote.port, remote.address, function (err, bytes) {
                     if (err) throw err;
                     console.log('UDP message request_file_download sent to ' + remote.address + ':' + remote.port);
@@ -138,6 +150,7 @@ function peer(config){
                 break;
             case "receive_file":
                 console.log(messageParsed.content)
+                console.log('checksum matches:' ,messageParsed.content.request_file_hash === checksum(messageParsed.content.requested_file))
 
         }
     })
