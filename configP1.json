@@ -1,6 +1,7 @@
 {
   "ip" :"127.0.0.1",
   "port":30001,
+  "sp_ip":"127.0.01",
   "sp_port":30000,
   "directoryPath": "./file_repo/",
   "output_dir":"./output_dir"
