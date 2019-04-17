@@ -145,7 +145,7 @@ function peer(config){
                 console.log(messageParsed.content)
                 if(!!messageParsed.content.owners && messageParsed.content.owners.length > 0) {
                     const buffer = buildMessage("request_file_download", messageParsed.content.fileName)
-                    client.send(buffer, 0, buffer.length, messageParsed.content.owners[0].port, messageParsed.content.owners[0].ip, function (err, bytes) {
+                    client.send(buffer, 0, buffer.length, messageParsed.content.owners[0].port, messageParsed.content.owners[0].address, function (err, bytes) {
                         if (err) throw err;
                         console.log('UDP message request_file_download sent to ' + messageParsed.content.owners[0].address + ':' + messageParsed.content.owners[0].port);
                     });
