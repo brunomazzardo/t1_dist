@@ -36,6 +36,28 @@ function superPeer(config){
         console.log('UDP Server listening on ' + address.address + ":" + address.port);
     });
     const connections  = []
+    const keepAliveRound = []
+    const lastLife = []
+    const toBeRemoved = []
+    setInterval(()=>{
+
+        connections.forEach(c=>{
+            if(keepAliveRound.indexOf(c.owner.address+':'+c.owner.port) > -1){
+                if(lastLife.indexOf(c.owner.address+':'+c.owner.port) > -1){
+                    toBeRemoved.push(c.owner.address+':'+c.owner.port)
+                }else {
+                    lastLife.push(c.owner.address+':'+c.owner.port)
+                }
+            }
+        })
+        toBeRemoved.forEach(f=>{
+            connections.filter(c=> {
+              return f !== c.owner.address+':'+c.owner.port
+            })
+        })
+    }, 5000);
+
+
 
 
     server.on('message', function (message, remote) {
@@ -171,6 +193,9 @@ function peer(config){
         if (err) throw err;
         console.log('UDP message sent to ' + config.sp_ip +':'+ config.sp_port);
     });
+
+
+
     stdin.addListener("data", function(d) {
         const input = d.toString().trim().split(" ")
         const action  = input[0]
