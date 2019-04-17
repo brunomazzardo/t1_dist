@@ -55,6 +55,16 @@ function superPeer(config){
                         console.log('UDP message-request_file_mc sent to ' + sp.ip +':'+ sp.port);
                     });
                 });
+                owners = connections.map(c =>{
+                    if(c.files.find(f => f.fileName === messageParsed.content) !== void 0)
+                        return c.owner
+                }).filter(Boolean)
+                buffer = buildMessage("file_found",{owners:owners,fileName:messageParsed.content})
+                if(owners.length > 0)
+                    server.send(buffer, 0, buffer.length, remote.port, remote.address, function(err, bytes) {
+                        if (err) throw err;
+                        console.log('UDP message sent to ' + remote.address +':'+ remote.port);
+                    });
 
                 break;
             case "request_file_mc":
