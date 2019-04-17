@@ -40,39 +40,44 @@ function superPeer(config){
 
     server.on('message', function (message, remote) {
         let messageParsed = JSON.parse(message)
-        let buffer = new Buffer()
+        let buffer = null
         let owners = []
+        console.log('received '+ messageParsed.type + ' from' + remote.address +':'+ remote.port)
         switch (messageParsed.type) {
             case "request_connection":
                 connections.push({files: [...messageParsed.content], owner: remote })
                 break;
             case "request_file":
-                 owners = connections.map(c =>{
-                    if(c.files.find(f => f.fileName === messageParsed.content) !== void 0)
-                        return c.owner
-                }).filter(Boolean)
-
-                 buffer  = buildMessage("file_found",owners)
-
-                server.send(buffer, 0, buffer.length, remote.port, remote.address, function(err, bytes) {
-                    if (err) throw err;
-                    console.log('UDP message sent to ' + remote.address +':'+ remote.port);
+                config.other_superPeers.forEach(sp =>{
+                    buffer =  buildMessage("request_file_mc",{fileName:messageParsed.content,origin:remote})
+                    server.send(buffer, 0, buffer.length, sp.port, sp.ip, function(err, bytes) {
+                        if (err) throw err;
+                        console.log('UDP message-request_file_mc sent to ' + sp.ip +':'+ sp.port);
+                    });
                 });
+
                 break;
             case "request_file_mc":
+                 console.log('receive request file mc from' + remote.address +':'+ remote.port)
                  owners = connections.map(c =>{
                     if(c.files.find(f => f.fileName === messageParsed.content.fileName) !== void 0)
                         return c.owner
                 }).filter(Boolean)
 
-                buffer  = buildMessage("file_found_mc",{owners:owners,origin:remote})
+                buffer  = buildMessage("file_found_mc",{owners:owners,origin:messageParsed.content.origin})
 
                 server.send(buffer, 0, buffer.length, remote.port, remote.address, function(err, bytes) {
                     if (err) throw err;
-                    console.log('UDP message sent to ' + remote.address +':'+ remote.port);
+                    console.log('UDP message-file_found_mc sent to ' + remote.address +':'+ remote.port);
                 });
                 break;
+            case "file_found_mc":
+                buffer  = buildMessage("file_found",messageParsed.content.owners)
 
+                server.send(buffer, 0, buffer.length, messageParsed.content.origin.port, messageParsed.content.origin.address, function(err, bytes) {
+                    if (err) throw err;
+                    console.log('UDP message-file_found sent to ' + messageParsed.content.origin.address +':'+ messageParsed.content.origin.port);
+                });
 
         }
     });
