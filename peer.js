@@ -35,26 +35,31 @@ function superPeer(config){
         const address = server.address();
         console.log('UDP Server listening on ' + address.address + ":" + address.port);
     });
-    const connections  = []
-    const keepAliveRound = []
-    const lastLife = []
-    const toBeRemoved = []
+    const connections  = [];
+    const keepAliveRound = [];
+    const lastLife = [];
+    const toBeRemoved = [];
     setInterval(()=>{
-
         connections.forEach(c=>{
-            if(keepAliveRound.indexOf(c.owner.address+':'+c.owner.port) > -1){
-                if(lastLife.indexOf(c.owner.address+':'+c.owner.port) > -1){
+            console.log('filtrando')
+            if(keepAliveRound.indexOf(c.owner.address+':'+c.owner.port) === -1){
+                if(lastLife.indexOf(c.owner.address+':'+c.owner.port) === -1){
                     toBeRemoved.push(c.owner.address+':'+c.owner.port)
                 }else {
                     lastLife.push(c.owner.address+':'+c.owner.port)
                 }
+            } else {
+                lastLife.filter(lf=> lf!==c.owner.address+':'+c.owner.port)
             }
+
         })
         toBeRemoved.forEach(f=>{
             connections.filter(c=> {
               return f !== c.owner.address+':'+c.owner.port
             })
         })
+
+        keepAliveRound.length = 0
     }, 5000);
 
 
@@ -112,8 +117,13 @@ function superPeer(config){
                         if (err) throw err;
                         console.log('UDP message-file_found sent to ' + messageParsed.content.origin.address +':'+ messageParsed.content.origin.port);
                     });
-
+                break;
+            case "keep_alive_request":
+                keepAliveRound.push(remote.address+':'+ remote.port)
+                break;
         }
+        console.log(JSON.stringify(connections) + '  status atual dos arquivos e conexẽs')
+
     });
     server.bind(config.port, config.ip);
 }
@@ -194,7 +204,14 @@ function peer(config){
         console.log('UDP message sent to ' + config.sp_ip +':'+ config.sp_port);
     });
 
+    setInterval(()=>{
 
+        const buffer = buildMessage("keep_alive_request")
+        client.send(buffer, 0, buffer.length, config.sp_port, config.sp_ip, function(err, bytes) {
+            if (err) throw err;
+            console.log('UDP message sent to ' + config.sp_ip +':'+ config.sp_port);
+        });
+    },5000)
 
     stdin.addListener("data", function(d) {
         const input = d.toString().trim().split(" ")
