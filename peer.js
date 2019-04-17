@@ -48,6 +48,8 @@ function superPeer(config){
                 connections.push({files: [...messageParsed.content], owner: remote })
                 break;
             case "request_file":
+                //TODO implementar sistema de multicast, hoje ele faz um unicast para cada supernodo que ele conhece :(
+
                 config.other_superPeers.forEach(sp =>{
                     buffer =  buildMessage("request_file_mc",{fileName:messageParsed.content,origin:remote})
                     server.send(buffer, 0, buffer.length, sp.port, sp.ip, function(err, bytes) {
