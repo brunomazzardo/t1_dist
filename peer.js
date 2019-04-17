@@ -54,7 +54,16 @@ function superPeer(config){
         console.log('received '+ messageParsed.type + ' from' + remote.address +':'+ remote.port)
         switch (messageParsed.type) {
             case "request_connection":
-                connections.push({files: [...messageParsed.content], owner: remote, lastKeepAlive: new Date() })
+                const remoteOwnerRQ = remote.address + ":" + remote.port;
+                let aux = connections.find(con => {
+                    const conOwner = con.owner.address + ":" + con.owner.port;
+                    return conOwner === remoteOwnerRQ
+                })
+                if(aux) {
+                    aux.lastKeepAlive = new Date();
+                } else {
+                    connections.push({files: [...messageParsed.content], owner: remote, lastKeepAlive: new Date() })
+                }
                 break;
             case "keep_alive":
                 const remoteOwner = remote.address + ":" + remote.port;
@@ -109,9 +118,6 @@ function superPeer(config){
                         console.log('UDP message-file_found sent to ' + messageParsed.content.origin.address +':'+ messageParsed.content.origin.port);
                     });
                 break;
-            case "keep_alive_request":
-                keepAliveRound.push(remote.address+':'+ remote.port)
-                break;
         }
 
     });
@@ -163,7 +169,6 @@ function peer(config){
         const buffer =  buildMessage("keep_alive")
         client.send(buffer, 0, buffer.length, config.sp_port, config.sp_ip, function(err, bytes) {
             if (err) throw err;
-            console.log('UDP message sent to ' + config.sp_ip +':'+ config.sp_port);
         });
     }, 5000);
 
@@ -196,7 +201,7 @@ function peer(config){
                 console.log('checksum matches:' ,messageParsed.content.request_file_hash === checksum(messageParsed.content.requested_file))
                 const checkSumMatches = messageParsed.content.request_file_hash === checksum(messageParsed.content.requested_file)
                 if(checkSumMatches)
-                    fs.writeFile(config.output_dir+messageParsed.content.fileName,messageParsed.content,'utf-8', function(err) {
+                    fs.writeFile(config.output_dir+messageParsed.content.fileName,messageParsed.content.requested_file,'utf-8', function(err) {
                         if(err) {
                             return console.log(err);
                         }
