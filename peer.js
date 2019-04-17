@@ -109,13 +109,36 @@ function readDir(config){
 
 function peer(config){
     const stdin = process.openStdin();
-    const buffer  = buildMessage("request_connection",readDir(config))
+    const files = readDir(config)
+    const buffer  = buildMessage("request_connection",files)
     const client = dgram.createSocket('udp4');
+    let lastFileRequest = ""
     client.on('message', function (message, remote) {
         let messageParsed = JSON.parse(message)
+        console.log('received '+ messageParsed.type + ' from' + remote.address +':'+ remote.port)
+
         switch (messageParsed.type) {
             case "file_found":
                 console.log(messageParsed.content)
+                if(!!messageParsed.content && messageParsed.content.length > 0) {
+                    const buffer = buildMessage("request_file_download", lastFileRequest)
+                    client.send(buffer, 0, buffer.length, messageParsed.content[0].port, messageParsed.content[0].ip, function (err, bytes) {
+                        if (err) throw err;
+                        console.log('UDP message request_file_download sent to ' + messageParsed.content[0].address + ':' + messageParsed.content[0].port);
+                    });
+                }
+                break;
+            case "request_file_download":
+                const requested_file = files.find(f => f.fileName = messageParsed.content)
+                const buffer = buildMessage("receive_file",requested_file )
+                client.send(buffer, 0, buffer.length,remote.port, remote.address, function (err, bytes) {
+                    if (err) throw err;
+                    console.log('UDP message request_file_download sent to ' + remote.address + ':' + remote.port);
+                });
+                break;
+            case "receive_file":
+                console.log(messageParsed.content)
+
         }
     })
     client.bind(config.port, config.ip);
@@ -128,7 +151,8 @@ function peer(config){
         const action  = input[0]
         switch (action) {
             case "rf" :
-                const buffer  = buildMessage("request_file",input[1])
+                lastFileRequest = input[1]
+                const buffer  = buildMessage("request_file",lastFileRequest)
                 client.send(buffer, 0, buffer.length, config.sp_port, config.ip, function(err, bytes) {
                     if (err) throw err;
                     console.log('UDP message sent to ' + config.ip +':'+ config.sp_port);

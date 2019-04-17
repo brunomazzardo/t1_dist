@@ -38,7 +38,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="js" value="2618" />
+          <entry key="js" value="2978" />
           <entry key="json" value="219" />
           <entry key="mp4" value="32" />
           <entry key="txt" value="83" />
@@ -47,7 +47,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="219" />
-          <entry key="JavaScript" value="2618" />
+          <entry key="JavaScript" value="2978" />
           <entry key="PLAIN_TEXT" value="115" />
         </counts>
       </usages-collector>
@@ -58,8 +58,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/peer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="52" column="60" selection-start-line="52" selection-start-column="60" selection-end-line="52" selection-end-column="60" />
+            <state relative-caret-position="272">
+              <caret line="130" column="41" lean-forward="true" selection-start-line="130" selection-start-column="41" selection-end-line="130" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -161,6 +161,11 @@
               <item name="t1" type="b2602c69:ProjectViewProjectNode" />
               <item name="t1" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="t1" type="b2602c69:ProjectViewProjectNode" />
+              <item name="t1" type="462c0819:PsiDirectoryNode" />
+              <item name="file_repo" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -201,12 +206,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1555445459053</updated>
-      <workItem from="1555445460483" duration="14003000" />
+      <workItem from="1555445460483" duration="15659000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14003000" />
+    <option name="totallyTimeSpent" value="15659000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1053" extended-state="6" />
@@ -310,8 +315,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/peer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="52" column="60" selection-start-line="52" selection-start-column="60" selection-end-line="52" selection-end-column="60" />
+        <state relative-caret-position="272">
+          <caret line="130" column="41" lean-forward="true" selection-start-line="130" selection-start-column="41" selection-end-line="130" selection-end-column="41" />
         </state>
       </provider>
     </entry>
