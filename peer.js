@@ -167,9 +167,9 @@ function peer(config){
         }
     })
     client.bind(config.port, config.ip);
-    client.send(buffer, 0, buffer.length, config.sp_port, config.ip, function(err, bytes) {
+    client.send(buffer, 0, buffer.length, config.sp_port, config.sp_ip, function(err, bytes) {
         if (err) throw err;
-        console.log('UDP message sent to ' + config.ip +':'+ config.sp_port);
+        console.log('UDP message sent to ' + config.sp_ip +':'+ config.sp_port);
     });
     stdin.addListener("data", function(d) {
         const input = d.toString().trim().split(" ")
@@ -179,18 +179,18 @@ function peer(config){
             case "rf" :
                 lastFileRequest = input[1]
                  buffer  = buildMessage("request_file",lastFileRequest)
-                client.send(buffer, 0, buffer.length, config.sp_port, config.ip, function(err, bytes) {
+                client.send(buffer, 0, buffer.length, config.sp_port, config.sp_ip, function(err, bytes) {
                     if (err) throw err;
-                    console.log('UDP message sent to ' + config.ip +':'+ config.sp_port);
+                    console.log('UDP message sent to ' + config.sp_ip +':'+ config.sp_port);
                 });
                 break;
             case "rfl" :
                 //TODO mudar para enviar a lista para o método que tem de ser criado no super nodo, não fazer n request de n arquivos
                 input[1].split(",").forEach(sr =>{
                     buffer  = buildMessage("request_file",sr)
-                        client.send(buffer, 0, buffer.length, config.sp_port, config.ip, function(err, bytes) {
+                        client.send(buffer, 0, buffer.length, config.sp_port, config.sp_ip, function(err, bytes) {
                             if (err) throw err;
-                            console.log('UDP message sent to ' + config.ip +':'+ config.sp_port);
+                            console.log('UDP message sent to ' + config.sp_ip +':'+ config.sp_port);
                         });
                     })
                 break;
