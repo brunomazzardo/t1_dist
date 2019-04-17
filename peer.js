@@ -185,7 +185,7 @@ function peer(config){
                 });
                 break;
             case "rfl" :
-
+                //TODO mudar para enviar a lista para o método que tem de ser criado no super nodo, não fazer n request de n arquivos
                 input[1].split(",").forEach(sr =>{
                     buffer  = buildMessage("request_file",sr)
                         client.send(buffer, 0, buffer.length, config.sp_port, config.ip, function(err, bytes) {
