@@ -2,5 +2,7 @@
   "ip" :"127.0.0.1",
   "port":30002,
   "sp_port":30000,
-  "directoryPath": "./file_repoP2/"
+  "directoryPath": "./file_repoP2/",
+  "output_dir":"./output_dir"
+
 }

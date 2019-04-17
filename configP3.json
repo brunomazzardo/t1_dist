@@ -3,5 +3,6 @@
   "sp_ip" :"192.168.0.158",
   "port":20001,
   "sp_port":20000,
-  "directoryPath": "./file_repoP3/"
+  "directoryPath": "./file_repoP3/",
+  "output_dir":"./output_dir/"
 }

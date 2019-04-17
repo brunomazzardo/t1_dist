@@ -36,34 +36,6 @@ function superPeer(config){
         console.log('UDP Server listening on ' + address.address + ":" + address.port);
     });
     const connections  = [];
-    const keepAliveRound = [];
-    const lastLife = [];
-    const toBeRemoved = [];
-    setInterval(()=>{
-        connections.forEach(c=>{
-            console.log('filtrando')
-            if(keepAliveRound.indexOf(c.owner.address+':'+c.owner.port) === -1){
-                if(lastLife.indexOf(c.owner.address+':'+c.owner.port) === -1){
-                    toBeRemoved.push(c.owner.address+':'+c.owner.port)
-                }else {
-                    lastLife.push(c.owner.address+':'+c.owner.port)
-                }
-            } else {
-                lastLife.filter(lf=> lf!==c.owner.address+':'+c.owner.port)
-            }
-
-        })
-        toBeRemoved.forEach(f=>{
-            connections.filter(c=> {
-              return f !== c.owner.address+':'+c.owner.port
-            })
-        })
-
-        keepAliveRound.length = 0
-    }, 5000);
-
-
-
 
     server.on('message', function (message, remote) {
         let messageParsed = JSON.parse(message)
@@ -122,7 +94,6 @@ function superPeer(config){
                 keepAliveRound.push(remote.address+':'+ remote.port)
                 break;
         }
-        console.log(JSON.stringify(connections) + '  status atual dos arquivos e conexẽs')
 
     });
     server.bind(config.port, config.ip);
@@ -186,7 +157,7 @@ function peer(config){
             case "request_file_download":
                 const requested_file_hash = files.find(f => f.fileName = messageParsed.content).hash
                 const requested_file =  getFileFromDir(config,messageParsed.content)
-                const buffer = buildMessage("receive_file",{requested_file:requested_file,request_file_hash:requested_file_hash})
+                const buffer = buildMessage("receive_file",{requested_file:requested_file,request_file_hash:requested_file_hash,fileName:messageParsed.content})
                 client.send(buffer, 0, buffer.length,remote.port, remote.address, function (err, bytes) {
                     if (err) throw err;
                     console.log('UDP message request_file_download sent to ' + remote.address + ':' + remote.port);
@@ -195,7 +166,15 @@ function peer(config){
             case "receive_file":
                 console.log(messageParsed.content)
                 console.log('checksum matches:' ,messageParsed.content.request_file_hash === checksum(messageParsed.content.requested_file))
+                const checkSumMatches = messageParsed.content.request_file_hash === checksum(messageParsed.content.requested_file)
+                if(checkSumMatches)
+                    fs.writeFile(config.output_dir+messageParsed.content.fileName,messageParsed.content,'utf-8', function(err) {
+                        if(err) {
+                            return console.log(err);
+                        }
 
+                        console.log("The file was saved!");
+                    });
         }
     })
     client.bind(config.port, config.ip);
@@ -203,15 +182,6 @@ function peer(config){
         if (err) throw err;
         console.log('UDP message sent to ' + config.sp_ip +':'+ config.sp_port);
     });
-
-    setInterval(()=>{
-
-        const buffer = buildMessage("keep_alive_request")
-        client.send(buffer, 0, buffer.length, config.sp_port, config.sp_ip, function(err, bytes) {
-            if (err) throw err;
-            console.log('UDP message sent to ' + config.sp_ip +':'+ config.sp_port);
-        });
-    },5000)
 
     stdin.addListener("data", function(d) {
         const input = d.toString().trim().split(" ")
